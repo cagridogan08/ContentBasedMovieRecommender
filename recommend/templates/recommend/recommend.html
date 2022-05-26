@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f1f1f1;
+}
+
+.header {
+  padding: 2px;
+  font-size: 40px;
+  text-align: center;
+  background: white;
+}
+
+.leftcolumn {   
+  float: left;
+  width: 100%;
+}
+
+.card {
+   background-color: white;
+   padding: 20px;
+   margin-top: 20px;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h3>Recommends for</h3>
+  <h2>{{pk.original_title}}</h2>
+  <h5><img src={{pk.Poster_Link}} alt=""></h5>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    {% for post in  recommends %}
+    <div class="card">
+      <a style="text-decoration: none; color: black;" href="/post/{{post.id}}">
+        <img src={{post.Poster_Link}} alt="">
+        <h2>{{post.GetTitleWithReleaseYear}}</h2>
+        
+      </a>
+      <h5>{{post.Overview}}</h5>
+      <h5>{{post.GetCast}}</h5><h5>{{post.GetGenre}}</h5><h5>{{post.GetRatings}}</h5>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+</html>

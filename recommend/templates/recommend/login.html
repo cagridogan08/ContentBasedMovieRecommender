@@ -1,0 +1,98 @@
+{% extends 'recommend/base.html'%}
+{% block title %}Log In{% endblock %}
+
+{% block body %}
+<style>
+    input{
+        color: black;
+    }
+</style>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-body" style="background-color: black;">
+                    <h3 style="color: white;">Log In</h3>
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="#" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_username" style="color: white;">
+                                Username:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_username" maxlength="30" name="username" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="id_password" style="color: white;">
+                                Password:
+                            </label>
+                            <div class="col-sm-10">
+                                <input id="id_password" maxlength="30" name="password" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success" style="background-color: whitesmoke; color: black;">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel-footer" style="color: black;">
+                    Don't have an account? <a href="{% url 'signup' %}">Click here</a> to register.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+
+def register(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        if password==password2:
+            if User.objects.filter(email=email).exists():
+                messages.info(request,'Email already used')
+                return redirect('register')
+            elif User.objects.filter(username=username).exists():
+                messages.info(request,'Username already used')
+                return redirect('register')
+            else:
+                user = User.objects.create_user(username=username,email=email,password=password)
+                user.save()
+                return redirect('login')
+        else:
+            messages.info(request,'Passwords are not match')
+            return redirect('register')
+    else:
+        return render(request,'register.html')
+
+def login(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username,password=password)
+
+        if user is not None:
+            auth.login(request,user)
+            return redirect('/')
+        else:
+            messages.info(request,'Invalid')
+            return redirect('login')
+
+    else:
+      return render(request,'login.html')

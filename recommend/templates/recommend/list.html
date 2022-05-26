@@ -1,0 +1,33 @@
+{% extends 'recommend/base.html'%}
+{% block body %}
+
+{% if not request.user.is_authenticated %}
+    <br>
+{% else %}
+    <center style="color:rgb(0, 0, 0)"><h2>Welcome {{user.username}}</h2></center>
+{% endif %}
+
+
+<hr>
+<br>
+<!-- Movie list -->
+    <div class="row" >
+            {% if movies %}
+            {% for movie in movies %}
+            <div class="col-sm-2 col-md-2 ">
+                <div class="thumbnail">
+                    <h4>{{movie.original_title}}</h4>
+                    <a href="{% url 'detail' movie.id %}">
+                        <img src="{{ movie.Poster_Link}}" class="img-responsive">
+                    </a>
+                    <h5>{{movie.Genre}}</h5>
+                </div>
+            </div>
+                {% endfor %}
+                {% endif %}
+        </div>
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'recommend/base.html'%}
+{% block body %}
+
+<h2 style="color: black;">My List</h2>
+<hr>
+<br>
+<!-- Movie list -->
+<div class="row">
+    {% if movies %}
+    {% for movie in movies %}
+        <div class="col-sm-2 col-md-2 ">
+            <div class="thumbnail">
+                <h4>{{movie.original_title}}</h4>
+                <a href="{% url 'detail' movie.id %}">
+                    <img src="{{ movie.Poster_Link}}" class="img-responsive">
+                </a>
+                <h5>{{movie.Genre}}</h5>
+            </div>
+        </div>
+    {% endfor %}
+    {% else %}
+        <div class="alert alert-danger">
+            <strong>Sorry!</strong> No movies in your list.
+        </div>
+    {% endif %}
+
+    
+</div>
+<div class="header">
+    <center><h3 style="color: black;">Recommends for You</h3></center>
+    </div>
+    <div class="row" >
+        {% if recommends %}
+        {% for movie in recommends %}
+        <div class="col-sm-2 col-md-2 ">
+            <div class="thumbnail" style="border-radius: 22px 22px 22px 22px;">
+                
+                <a href="{% url 'detail' movie.id %}">
+                    <h4>{{movie.original_title}}</h4>
+                    <img src="{{ movie.Poster_Link}}" class="img-responsive" style="border-radius: 22px 22px 22px 22px;">
+                </a>
+                <h5>{{movie.Genre}}</h5>
+            </div>
+        </div>
+            {% endfor %}
+            {% endif %}
+    </div>
+{% endblock %}
